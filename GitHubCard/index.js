@@ -6,6 +6,18 @@ import axios from 'axios'
     https://api.github.com/users/<your name>
 */
 
+const URL = 'https://api.github.com/users/dgamboa';
+const cards = document.querySelector('.cards');
+
+axios.get(URL)
+  .then(res => {
+    const userCard = userCardBuilder(res);
+    cards.appendChild(userCard);
+  })
+  .catch(err => {
+    console.log(err);
+  })
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -13,6 +25,7 @@ import axios from 'axios'
 
     Skip to STEP 3.
 */
+
 
 /*
   STEP 4: Pass the data received from Github into your function,
@@ -30,7 +43,15 @@ import axios from 'axios'
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan',
+                        'dustinmyers',
+                        'justsml',
+                        'luishrd',
+                        'bigknell'];
+
+function URLify(username) {
+  return `https://api.github.com/users/${username}`;
+}
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -51,6 +72,42 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function userCardBuilder(userData) {
+  const divCard = document.createElement('div');
+  const img = document.createElement('img');
+  const divInfo = document.createElement('div');
+  const h3 = document.createElement('h3');
+  const pUsername = document.createElement('p');
+  const pLocation = document.createElement('p');
+  const pProfile = document.createElement('p');
+  const aProfileLink = document.createElement('a');
+  const pFollowers = document.createElement('p');
+  const pFollowing = document.createElement('p');
+  const pBio = document.createElement('p');
+
+  divCard.classList.add('card');
+  divInfo.classList.add('card-info');
+  h3.classList.add('name');
+  pUsername.classList.add('username');
+
+  img.src = userData.data.avatar_url;
+  h3.textContent = userData.data.name;
+  pUsername.textContent = userData.data.login;
+  pLocation.textContent = userData.data.location;
+  pProfile.textContent = "Profile: ";
+  aProfileLink.textContent = userData.data.html_url;
+  aProfileLink.href = userData.data.html_url;
+  pFollowers.textContent = `Followers: ${userData.data.followers}`;
+  pFollowing.textContent = `Following: ${userData.data.following}`;
+  pBio.textContent = `Bio: ${userData.data.bio}`;
+
+  pProfile.appendChild(aProfileLink);
+  divInfo.append(h3, pUsername, pLocation, pProfile, pFollowers, pFollowing, pBio);
+  divCard.appendChild(divInfo);
+
+  return divCard;
+}
 
 /*
   List of LS Instructors Github username's:
