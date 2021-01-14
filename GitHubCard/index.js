@@ -6,17 +6,17 @@ import axios from 'axios'
     https://api.github.com/users/<your name>
 */
 
-const URL = 'https://api.github.com/users/dgamboa';
 const cards = document.querySelector('.cards');
+// const URL = 'https://api.github.com/users/dgamboa';
 
-axios.get(URL)
-  .then(res => {
-    const userCard = userCardBuilder(res);
-    cards.appendChild(userCard);
-  })
-  .catch(err => {
-    console.log(err);
-  })
+// axios.get(URL)
+//   .then(res => {
+//     const userCard = userCardBuilder(res);
+//     cards.appendChild(userCard);
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   })
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -43,15 +43,27 @@ axios.get(URL)
     user, and adding that card to the DOM.
 */
 
-const followersArray = ['tetondan',
-                        'dustinmyers',
-                        'justsml',
-                        'luishrd',
-                        'bigknell'];
+const friendsArray = ['dgamboa',
+                      'tetondan',
+                      'dustinmyers',
+                      'justsml',
+                      'luishrd',
+                      'bigknell'];
 
 function URLify(username) {
   return `https://api.github.com/users/${username}`;
 }
+
+friendsArray.map(username => {
+  axios.get(URLify(username))
+  .then(res => {
+    const userCard = userCardBuilder(res);
+    cards.appendChild(userCard);
+  })
+  .catch(err => {
+    console.log(err);
+  })
+});
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
